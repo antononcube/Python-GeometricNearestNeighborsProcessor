@@ -65,7 +65,7 @@ gnnObj = (GeometricNearestNeighborsProcessor(dsPoints)
 Show the plot obtained above:
 
 ```python
-gnnObj.plot.show()
+gnnObj.take_value().show()
 ```
 
 Here we generate another set of random points using the same random point generators:
