@@ -6,6 +6,8 @@ This Python package is a translation to Python of the Wolfram Language software 
 ["MonadicGeometricNearestNeighbors"](https://resources.wolframcloud.com/PacletRepository/resources/AntonAntonov/MonadicGeometricNearestNeighbors), [AAp1].
 (The R package ["GNNMon-R"](https://github.com/antononcube/R-packages/tree/master/GNNMon-R), [AAp4], is another translation of [AAp1].)
  
+**Remark:** In order to keep outputs consistent with R and WL package the data frame outputs of the Python package
+use camel case for the column names. (That might change in the future.)
 
 ----
 
