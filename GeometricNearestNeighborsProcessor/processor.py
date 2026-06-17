@@ -138,8 +138,11 @@ class GeometricNearestNeighborsProcessor:
         self.point_ids = [f"p{i:0{width}d}" for i in range(1, len(frame) + 1)]
         return self
 
-    def take_data(self) -> pd.DataFrame:
-        return self.data
+    def take_data(self, copy: bool = True) -> pd.DataFrame:
+        if copy:
+            return self.data.copy()
+        else:
+            return self.data
 
     def set_number_of_nns(self, number_of_nns):
         self.number_of_nns = int(number_of_nns) if number_of_nns is not None else None
