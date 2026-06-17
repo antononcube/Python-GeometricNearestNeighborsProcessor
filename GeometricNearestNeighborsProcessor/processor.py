@@ -112,7 +112,7 @@ class GeometricNearestNeighborsProcessor:
             "splus_quartile_identifier_parameters": splus_quartile_identifier_parameters,
         }
         if ident not in mapping:
-            raise ValueError(f"Unknown outlier identifier: {outlier_identifier}")
+            raise ValueError(f"Unknown outlier identifier: {outlier_identifier}.")
         return mapping[ident]
 
     def set_value(self, value):
@@ -135,14 +135,8 @@ class GeometricNearestNeighborsProcessor:
                 print(label)
             print(func(self.value))
             return self
-        raise ValueError("The argument function is expected to be callable) or None.")
+        raise ValueError("The argument function is expected to be a callable or None.")
 
-    def option(self, func: Callable[["GeometricNearestNeighborsProcessor"], "GeometricNearestNeighborsProcessor"]):
-        try:
-            res = func(self)
-            return res if res is not None else self
-        except Exception:
-            return self
 
     def set_data(self, data):
         frame = self._to_frame(data)
@@ -318,9 +312,6 @@ class GeometricNearestNeighborsProcessor:
         self.lower_threshold = float(thresholds[0])
         self.upper_threshold = float(thresholds[1])
         return self
-
-    def computer_thresholds(self, *args, **kwargs):
-        return self.compute_thresholds(*args, **kwargs)
 
     def find_nearest(
         self,
