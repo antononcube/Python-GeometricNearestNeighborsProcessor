@@ -42,7 +42,22 @@ class GeometricNearestNeighborsProcessor:
             "cosinedistance": "cosine",
         }
         if s not in aliases:
-            raise ValueError(f"Unknown distance function: {distance_function}")
+            raise ValueError(f"Unknown distance function: {distance_function}.")
+        return aliases[s]
+
+    @staticmethod
+    def _normalize_method(method: str | None) -> str:
+        if method is None:
+            return "kdtree"
+        s = str(method).strip().lower()
+        aliases = {
+            "kdtree": "kdtree",
+            "kd_tree": "kdtree",
+            "scan": "scan",
+            "brute": "scan",
+        }
+        if s not in aliases:
+            raise ValueError(f"Unknown method: {method}.")
         return aliases[s]
 
     @staticmethod
@@ -200,16 +215,21 @@ class GeometricNearestNeighborsProcessor:
     def take_kd_tree_object(self):
         return self.kd_tree_object
 
-    def create_kd_tree_object(self, distance_function: str = "euclidean"):
+    def create_kd_tree_object(self, distance_function: str = "euclidean", algorithm: str = "kd_tree"):
         metric = self._normalize_distance_function(distance_function)
-        tree = NearestNeighbors(metric=metric, algorithm="auto")
+        tree = NearestNeighbors(metric=metric, algorithm=algorithm)
         tree.fit(self.data.to_numpy(dtype=float))
         self.kd_tree_object = tree
         self.distance_function = metric
         return self
 
-    def make_nearest_function(self, distance_function: str = "euclidean"):
-        return self.create_kd_tree_object(distance_function=distance_function)
+    def make_nearest_function(self, distance_function: str = "euclidean", method: str | None = "kdtree"):
+        methodLocal = self._normalize_method(method)
+        if method == "kdtree":
+            algorithm = "kd_tree"
+        else:
+            algorithm = "brute"
+        return self.create_kd_tree_object(distance_function=distance_function, algorithm=algorithm)
 
     def compute_matrix_distances(self, point, distance_function: str | None = "euclidean"):
         metric = self._normalize_distance_function(distance_function or self.distance_function)
@@ -307,20 +327,20 @@ class GeometricNearestNeighborsProcessor:
         point,
         n: int = 12,
         radius: float = np.inf,
-        method: str | None = "scan",
+        method: str | None = "kdtree",
         distance_function: str | None = "euclidean",
     ):
+        methodLocal = self._normalize_method(method)
         metric = self._normalize_distance_function(distance_function or self.distance_function)
-        m = (method or ("kdtree" if self.kd_tree_object is not None else "scan")).lower()
         p = np.asarray(point, dtype=float).reshape(1, -1)
 
-        if m == "scan":
+        if methodLocal == "scan":
             dists = self.compute_matrix_distances(point=p[0], distance_function=metric).take_value()
             order = np.argsort(dists.to_numpy())[: min(n, len(dists))]
             df = pd.DataFrame({"Index": order + 1, "Distance": dists.to_numpy()[order]})
             if np.isfinite(radius):
                 df = df[df["Distance"] <= radius]
-        elif m == "kdtree":
+        elif methodLocal == "kdtree":
             if self.kd_tree_object is None:
                 self.create_kd_tree_object(distance_function=metric)
             model = self.kd_tree_object
@@ -337,7 +357,7 @@ class GeometricNearestNeighborsProcessor:
                 dist = dist[0]
             df = pd.DataFrame({"Index": idx + 1, "Distance": dist})
         else:
-            raise ValueError('method must be one of None, "scan", "kdtree".')
+            raise ValueError('method must be one of None, "scan", or "kdtree".')
 
         self.value = df.reset_index(drop=True)
         return self
