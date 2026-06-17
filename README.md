@@ -58,8 +58,14 @@ gnnObj = (GeometricNearestNeighborsProcessor(dsPoints)
    .compute_thresholds(number_of_nearest_neighbors = 10, aggregation_function = "mean", outlier_identifier = "QuartileIdentifierParameters")
    .find_anomalies()
    .echo_function_value("Anomaly points:", lambda x: print(x))
-   .plot()
+   .plot(title="Random points", template="plotly_dark")
 )
+```
+
+Show the plot obtained above:
+
+```python
+gnnObj.plot.show()
 ```
 
 Here we generate another set of random points using the same random point generators:
