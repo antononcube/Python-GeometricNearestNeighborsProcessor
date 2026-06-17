@@ -150,7 +150,7 @@ class GeometricNearestNeighborsProcessor:
             frame = frame.reset_index(drop=True)
         self.data = frame
         width = max(1, len(str(len(frame))))
-        self.point_ids = [f"p{i:0{width}d}" for i in range(1, len(frame) + 1)]
+        self.point_ids = [f"p{i:0{width}d}" for i in range(0, len(frame))]
         return self
 
     def take_data(self, copy: bool = True) -> pd.DataFrame:
@@ -337,7 +337,7 @@ class GeometricNearestNeighborsProcessor:
         if methodLocal == "scan":
             dists = self.compute_matrix_distances(point=p[0], distance_function=metric).take_value()
             order = np.argsort(dists.to_numpy())[: min(n, len(dists))]
-            df = pd.DataFrame({"Index": order + 1, "Distance": dists.to_numpy()[order]})
+            df = pd.DataFrame({"Index": order, "Distance": dists.to_numpy()[order]})
             if np.isfinite(radius):
                 df = df[df["Distance"] <= radius]
         elif methodLocal == "kdtree":
@@ -355,7 +355,7 @@ class GeometricNearestNeighborsProcessor:
                 dist, idx = model.kneighbors(p, n_neighbors=min(n, len(self.data)))
                 idx = idx[0]
                 dist = dist[0]
-            df = pd.DataFrame({"Index": idx + 1, "Distance": dist})
+            df = pd.DataFrame({"Index": idx, "ID": [self.point_ids[i] for i in idx], "Distance": dist})
         else:
             raise ValueError('method must be one of None, "scan", or "kdtree".')
 
@@ -385,7 +385,7 @@ class GeometricNearestNeighborsProcessor:
                 mrad = float(self.radius_function(recs["Distance"].to_numpy()))
             else:
                 mrad = float(getattr(np, str(self.radius_function))(recs["Distance"].to_numpy()))
-            rows.append({"Index": int(i) + 1, "Radius": mrad, "Label": bool(mrad <= self.upper_threshold)})
+            rows.append({"Index": int(i), "Radius": mrad, "Label": bool(mrad <= self.upper_threshold)})
 
         self.value = pd.DataFrame(rows, columns=["Index", "Radius", "Label"])
         return self
@@ -402,7 +402,7 @@ class GeometricNearestNeighborsProcessor:
             self.value["Radius"] = pd.Series(dtype=float)
             return self
 
-        idx = (anomaly_rows["Index"].to_numpy(dtype=int) - 1).tolist()
+        idx = (anomaly_rows["Index"].to_numpy(dtype=int)).tolist()
         points_df = base_points.iloc[idx].reset_index(drop=True)
         points_df["Radius"] = anomaly_rows["Radius"].to_numpy()
         self.value = points_df
