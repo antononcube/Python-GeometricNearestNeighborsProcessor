@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "GeometricNearestNeighborsProcessor"
+version = "0.1.0"
+description = "Geometric nearest-neighbor workflows with threshold-based anomaly detection."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+  "numpy",
+  "pandas",
+  "scipy",
+  "scikit-learn",
+  "plotly",
+  "OutlierIdentifiers",
+]
+
+[project.urls]
+Homepage = "https://github.com/antononcube/Python-GeometricNearestNeighborsProcessor"
+
+[tool.setuptools]
+packages = ["GeometricNearestNeighborsProcessor"]
