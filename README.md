@@ -129,8 +129,10 @@ See the notebook ["Usage-examples.ipynb"](./docs/Usage-examples.ipynb) for more 
 
 - The core Nearest Neighbors (NNs) finding functionality is provided by the ["scikit-learn"](scikit-learn.org) class
 [NearestNeighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html).
-  - The NNs finding algorithms used by `GeometricNearestNeighborsProcessor` are "brute" and "kd_tree".  
-    
+
+- The NNs finding algorithms used by `GeometricNearestNeighborsProcessor` are "scan" and "kdtree".
+  - "scan" is implemented in the class `GeometricNearestNeighborsProcessor` instead of delegating to scikit-learn's `NearestNeighbors` "brute" algorithm.
+  - "kdtree" delegates to `NearestNeighbors` "kd_tree" algorithm.
 
 ----
 
