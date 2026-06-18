@@ -83,6 +83,19 @@ Here the points of second set are classified into being anomalous or not:
 gnnObj.classify(dfPoints2).take_value()
 ```
 
+See the notebook ["Usage-examples.ipynb"](./docs/Usage-examples.ipynb) for more detailed examples.
+
+----
+
+## Implementation details
+
+The core Nearest Neighbors (NNs) finding functionality is provided by ["scikit-learn"](scikit-learn.org) class
+[NearestNeighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html).
+
+The chainable (monadic-pipeline-like) behavior of the methods of the class `GeometricNearestNeighborsProcessor` 
+is implemented by following the principle that all methods return `self`, except the so-called "takers", i.e., 
+methods with names that start with "take_".
+
 ----
 
 ## References
