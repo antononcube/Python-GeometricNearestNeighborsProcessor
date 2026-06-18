@@ -89,12 +89,18 @@ See the notebook ["Usage-examples.ipynb"](./docs/Usage-examples.ipynb) for more 
 
 ## Implementation details
 
-The core Nearest Neighbors (NNs) finding functionality is provided by ["scikit-learn"](scikit-learn.org) class
-[NearestNeighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html).
+- The package provides the class `GeometricNearestNeighborsProcessor` that can be used to construct chainable, monadic pipeline-like behavior.
 
-The chainable (monadic-pipeline-like) behavior of the methods of the class `GeometricNearestNeighborsProcessor` 
-is implemented by following the principle that all methods return `self`, except the so-called "takers", i.e., 
-methods with names that start with "take_".
+- Plotting of the data points is done via ["plotly"](https://plotly.com/python/) -- just a scatter plot of 2D points for now. 
+
+- The chainable behavior of the methods of the class `GeometricNearestNeighborsProcessor`is implemented 
+  by following the principle that all methods return `self`, except the so-called "takers".
+  - I.e., methods with names that start with "take_".
+
+- The core Nearest Neighbors (NNs) finding functionality is provided by the ["scikit-learn"](scikit-learn.org) class
+[NearestNeighbors](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.NearestNeighbors.html).
+  - The NNs finding algorithms used by `GeometricNearestNeighborsProcessor` are "brute" and "kd_tree".  
+    
 
 ----
 
