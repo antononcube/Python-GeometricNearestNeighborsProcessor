@@ -9,7 +9,7 @@ The magic cell specs below are included to simplify the prompts usage with the p
 
 ---
 
-## Programming
+## Reprogramming
 
 The initial version of the package was made by LLM-reprogramming of the 
 [code](https://github.com/antononcube/R-packages/blob/master/GNNMon-R/R/GNNMonFunctions.R) 
@@ -26,6 +26,18 @@ For example, the R function GNNMonComputeThresholds should become the Python cla
 Use the Python package "OutlerIdentifiers" for the outlier identifier functions. 
 Use a popular Python package for the finding the nearest neighbors of geometric points.
 ```
+
+Multiple corrections and improvements had to be made of the generated code:
+
+- Removing +1 offset of point indexes
+- Setter and taker of point identifiers
+- Including point identifiers in find-nearest results
+- Using a dictionary of labels to points as input
+- Normalizing specified method values
+- Including more distance
+- More informative representation (`__repr__` and `__str__`)
+
+**Remark:** Probably those corrections could have been done by an LLM, but it seemed easier (or faster) to do them by hand.
 
 ---
 
