@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Callable, Iterable
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -29,6 +30,10 @@ class GeometricNearestNeighborsProcessor:
         self.kd_tree_object = None
         self.point_ids = None
         self.set_data(data)
+
+    @staticmethod
+    def _is_str_list(obj):
+        return isinstance(obj, list) and all([isinstance(x, str) for x in obj])
 
     @staticmethod
     def _normalize_distance_function(distance_function: str | None) -> str:
@@ -152,6 +157,26 @@ class GeometricNearestNeighborsProcessor:
             return self.data.copy()
         else:
             return self.data
+
+    def set_point_identifiers(self, identifiers):
+        return self.set_point_ids(identifiers)
+
+    def take_point_identifiers(self):
+        return self.take_point_ids()
+
+    def set_point_ids(self, ids):
+        if not isinstance(self.data, pd.DataFrame):
+            raise ValueError("Cannot find data.")
+        if self._is_str_list(ids) and len(ids) == self.data.shape[0]:
+            self.point_ids = ids
+            if len(list(dict.fromkeys(ids))) < self.data.shape[0]:
+                warnings.warn("Not all elements are unique.", UserWarning)
+        else:
+            raise ValueError(f"The first argument is expected to be a string list of length {self.data.shape[0]}.")
+        return self
+
+    def take_point_ids(self):
+        return self.point_ids
 
     def set_number_of_nns(self, number_of_nns):
         self.number_of_nns = int(number_of_nns) if number_of_nns is not None else None
@@ -449,3 +474,21 @@ class GeometricNearestNeighborsProcessor:
 
         self.value = fig
         return self
+
+    # ------------------------------------------------------------------
+    # Representation
+    # ------------------------------------------------------------------
+    def __str__(self):
+        if isinstance(self.data, pd.DataFrame):
+            res = "GeometricNearestNeighborsProcessor object with %d points of dimension %d." % self.data.shape
+        else:
+            res = "GeometricNearestNeighborsProcessor object without points."
+
+        return res
+
+    def __repr__(self):
+        """Representation of GeometricNearestNeighborsProcessor object."""
+        if isinstance(self.take_data(), pd.DataFrame):
+            return f"<GeometricNearestNeighborsProcessor object with data shape dimensions {self.take_data().shape}\n" + f"\tand distance function \"{self.take_distance_function()}\">"
+        else:
+            return "GeometricNearestNeighborsProcessor object without points."
