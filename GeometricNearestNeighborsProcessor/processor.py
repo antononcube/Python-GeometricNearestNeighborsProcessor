@@ -57,7 +57,7 @@ class GeometricNearestNeighborsProcessor:
             "haversinedistance": "haversine",
         }
         if s not in aliases:
-            raise ValueError(f"Unknown distance function: {distance_function}.")
+            raise ValueError(f"Unknown distance function: '{distance_function}'. The following distance functions are supported: '{"','".join(aliases.keys())}'.")
         return aliases[s]
 
     @staticmethod
