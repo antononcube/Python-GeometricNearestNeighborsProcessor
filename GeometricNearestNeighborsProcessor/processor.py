@@ -365,6 +365,7 @@ class GeometricNearestNeighborsProcessor:
         p = np.asarray(point, dtype=float).reshape(1, -1)
 
         if methodLocal == "scan":
+            # Instead of delegating to scikit-learn's NearestNeighbors "brute" algorithm
             dists = self.compute_matrix_distances(point=p[0], distance_function=metric).take_value()
             order = np.argsort(dists.to_numpy())[: min(n, len(dists))]
             df = pd.DataFrame({"Index": order, "Distance": dists.to_numpy()[order]})
