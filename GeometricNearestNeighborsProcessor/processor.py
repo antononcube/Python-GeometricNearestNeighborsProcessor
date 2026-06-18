@@ -470,8 +470,8 @@ class GeometricNearestNeighborsProcessor:
         import plotly.express as px
 
         frame = self._to_frame(data) if data is not None else (self.value if isinstance(self.value, pd.DataFrame) else self.data)
-        if frame.shape[1] < 2:
-            raise ValueError("Plotting requires at least two columns.")
+        if frame.shape[1] == 2:
+            raise ValueError("Plotting requires exactly two columns of object's data.")
         x_col = x or frame.columns[0]
         y_col = y or frame.columns[1]
         fig = px.scatter(frame, x=x_col, y=y_col, title=title, template=template, **kwargs)
