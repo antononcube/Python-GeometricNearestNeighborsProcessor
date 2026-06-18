@@ -11,11 +11,9 @@ use camel case for the column names. (That might change in the future.)
 
 ----
 
-## Theoretical background
+## Purpose and theoretical background
 
-The main idea behind the functionality of the package is the following.
-
-Tasks for a given set $P$ of nD points:
+Consider the following computational tasks for a given set of $n$-dimensional (nD) points $P$:
 
 1. Find the points of $P$ that are outliers or anomalies
 2. Find the points of another set $P_1$ that can be seen anomalies wrt to $P$
@@ -25,7 +23,11 @@ Tasks for a given set $P$ of nD points:
 4. Plot the points $P$ with minimal setup or specification writing
 5. Give the (sparse) proximity matrix of $P$ for a specified number of neighbors 
 
-Point anomalies are found in the following way:
+Let us define an anomalous point as one that is "too far" from the other points.  
+Which points are "too far" from the rest can be determined by examining statistics of distances between each point 
+and $k$ nearest neighbors of it.
+
+More concretely, point anomalies are found in the following way:
 
 1. Input:
    - Points `P` as a data frame, list, or dictionary
