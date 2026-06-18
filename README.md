@@ -11,6 +11,36 @@ use camel case for the column names. (That might change in the future.)
 
 ----
 
+## Theoretical background
+
+The main idea behind the functionality of the package is the following.
+
+Tasks for a given set $P$ of nD points:
+
+1. Find the points of $P$ that are outliers or anomalies
+2. Find the points of another set $P_1$ that can be seen anomalies wrt to $P$
+3. For a given nD point find its Nearest Neighbors (NNs) in $P$
+   - The points of $P$ can have labels 
+   - It might be desired to get the distances and labels of the NNs  
+4. Plot the points $P$ with minimal setup or specification writing
+5. Give the (sparse) proximity matrix of $P$ for a specified number of neighbors 
+
+Point anomalies are found in the following way:
+
+1. Input:
+   - Points `P` as a data frame, list, or dictionary
+   - Number of nearest neighbors `n`
+   - Distance function `d`
+   - Aggregation function `a`
+2. For each point of `P` 
+   - Find its `n` nearest neighbors
+   - Aggregate with `a` the corresponding `n` distance
+3. Using the statistics for the previous step -- a 1D array -- find outlier identification parameters
+   - Like, Hample-, SPLUS-, Quartile parameters
+4. Identify anomalies using the parameters of the previous step
+
+----
+
 ## Usage examples
 
 Load packages:
