@@ -36,7 +36,7 @@ Point anomalies are found in the following way:
    - Find its `n` nearest neighbors
    - Aggregate with `a` the corresponding `n` distance
 3. Using the statistics for the previous step -- a 1D array -- find outlier identification parameters
-   - Like, Hample-, SPLUS-, Quartile parameters
+   - Like, Hampel-, SPLUS-, Quartile parameters
 4. Identify anomalies using the parameters of the previous step
 
 ----
