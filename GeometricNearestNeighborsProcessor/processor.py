@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Dict
 import warnings
 
 import numpy as np
@@ -17,7 +17,7 @@ from sklearn.neighbors import NearestNeighbors
 class GeometricNearestNeighborsProcessor:
     """Chainable processor for geometric nearest-neighbor workflows."""
 
-    def __init__(self, data: pd.DataFrame | np.ndarray | Iterable[Iterable[float]]):
+    def __init__(self, data: pd.DataFrame | np.ndarray | Iterable[Iterable[float|int]] | Dict[str, Iterable[float|int]]) -> None:
         self.value = None
         self.data = None
         self.number_of_nns = None
@@ -144,6 +144,10 @@ class GeometricNearestNeighborsProcessor:
 
 
     def set_data(self, data):
+        if isinstance(data, dict):
+            self.set_data(list(data.values()))
+            self.set_point_ids(list(data.keys()))
+            return self
         frame = self._to_frame(data)
         if not isinstance(frame.index, pd.RangeIndex):
             frame = frame.reset_index(drop=True)
