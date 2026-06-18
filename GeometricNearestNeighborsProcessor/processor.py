@@ -45,6 +45,16 @@ class GeometricNearestNeighborsProcessor:
             "euclideandistance": "euclidean",
             "cosine": "cosine",
             "cosinedistance": "cosine",
+            "minkowski": "minkowski",
+            "minkowskidistance": "minkowski",
+            "cityblock": "cityblock",
+            "cityblockdistance": "cityblock",
+            "taxicab": "manhattan",
+            "taxicabdistance": "manhattan",
+            "manhattan": "manhattan",
+            "manhattandistance": "manhattan",
+            "haversine": "haversine",
+            "haversinedistance": "haversine",
         }
         if s not in aliases:
             raise ValueError(f"Unknown distance function: {distance_function}.")
