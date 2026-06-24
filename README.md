@@ -16,7 +16,7 @@ use camel case for the column names. (That might change in the future.)
 Consider the following computational tasks for a given set of $n$-dimensional (nD) points $P$:
 
 1. Find the points of $P$ that are outliers or anomalies
-2. Find the points of another set $P_1$ that can be seen anomalies wrt to $P$
+2. Find the points of another set $P_1$ that can be seen as anomalies wrt to $P$
 3. For a given nD point find its Nearest Neighbors (NNs) in $P$
    - The points of $P$ can have labels 
    - It might be desired to get the distances and labels of the NNs  
@@ -36,9 +36,9 @@ More concretely, point anomalies are found in the following way:
    - Aggregation function `a`
 2. For each point of `P` 
    - Find its `n` nearest neighbors
-   - Aggregate with `a` the corresponding `n` distance
-3. Using the statistics for the previous step -- a 1D array -- find outlier identification parameters
-   - Like, Hampel-, SPLUS-, Quartile parameters
+   - Aggregate with `a` the corresponding `n` distances
+3. Using the statistics from the previous step -- a 1D array -- find outlier identification parameters
+   - Like, Hampel-, SPLUS-, or Quartile parameters
 4. Identify anomalies using the parameters of the previous step
 
 ----
